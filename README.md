@@ -1,4 +1,2 @@
 # matlab-chess
-chess in matlab. FUCK MATLAB ME AND MY HOMIES HATE MATLAB
-
-need simple game engine
+chess in matlab for engr 1181 final project. Author: Michael Hollinger
