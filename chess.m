@@ -88,10 +88,11 @@ while 1
         wr, wn, wb, wq, wk, wb, wn, wr;
     ];
 
-    l_br_has_moved = 0;
-    l_wr_has_moved = 0;
-    r_br_has_moved = 0;
-    r_wr_has_moved = 0;
+    % white left, right rook, and king
+    w_moved = [false, false, false];
+
+    % black left, right rook, and king
+    b_moved = [false, false, false];
 
     drawScene(main_scene, bg, game_start);
     title("Start Menu");
@@ -120,16 +121,39 @@ while 1
         
                 [x,y] = getMouseInput(main_scene);
                 
-                %
         
                 if can_move(game_status, r, c, x, y, turn)
+                    if turn
+                        if r == 1 && c == 1
+                            b_moved(1) = true;
+                        elseif r == 1 && c == 8
+                            b_moved(2) = true;
+                        elseif r == 1 && c == 5
+                            b_moved(3) = true;
+                        end
+                    else
+                        if r == 8 && c == 1
+                            w_moved(1) = true;
+                        elseif r == 8 && c == 8
+                            w_moved(2) = true;
+                        elseif r == 8 && c == 5
+                            w_moved(3) = true;
+                        end
+                    end
+
                     game_status(r,c) = tp;
                     game_status(x,y) = selected_piece;
                     turn = ~turn;
                     checkmate = is_checkmate(game_status, turn);
+                else
+                    % below is called bad programming
+                    game_status_temp = castle(game_status, r, c, x, y,...
+                        turn, w_moved, b_moved);
+                    if ~isequal(game_status_temp, game_status)
+                        turn = ~turn;
+                        game_status = game_status_temp;
+                    end
                 end
-
-                
         
                 bg(r,c) = prev_color;
                 drawScene(main_scene, bg, game_status);
