@@ -1,4 +1,4 @@
 # matlab-chess
-ches in matlab. FUCK MATLAB!
+chess in matlab. FUCK MATLAB ME AND MY HOMIES HATE MATLAB
 
 need simple game engine
