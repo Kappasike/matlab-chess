@@ -3,6 +3,10 @@ function [eval] = evaluate_board(game_status)
     
     for r=1:8
         for c=1:8
+            [h, w] = size(game_status);
+            if h<1 || h>8 || w<1 || w>8
+                game_status
+            end
             current_piece = game_status(r,c);
             switch(current_piece)
                 case 9      % white pawn
@@ -15,6 +19,8 @@ function [eval] = evaluate_board(game_status)
                     eval = eval + 5;
                 case 12     % white queen
                     eval = eval + 9;
+                case 11     % white king
+                    eval = eval + 80;
                 case 10     % black pawn
                     eval = eval - 1;
                 case 19     % black knight
@@ -25,6 +31,8 @@ function [eval] = evaluate_board(game_status)
                     eval = eval - 5;
                 case 17     % black queen
                     eval = eval - 9;
+                case 16     % black king
+                    eval = eval - 80;
             end
         end
     end

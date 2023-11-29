@@ -184,17 +184,22 @@ while 1
                     break;
                 end
 
+                pause(0.1);
+
                 if bot_enabled
                     legal_positions = get_bot_positions(game_status, true);
+                    if size(legal_positions) == 0
+                        is_checkmate = true;
+                        return;
+                    end
 
-                    best_move_index = minimax(game_status, -1000, 1000, true);
+                    best_move_index = get_best_move_index(game_status);
                     game_status = legal_positions(:,:,best_move_index);
-                    
+
                     bg = stock_bg;
                     drawScene(main_scene, bg, game_status);
                     title("Selection Made");
                 end
-                
             end
         end
     end

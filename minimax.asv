@@ -1,15 +1,33 @@
-function [optimal_index] = minimax(legal_positions, a, b, turn)
+function [optimal_index] = minimax(game_status, a, b, turn, depth)
     % should get the index of the best move
     % first just get best move
-    optimal_index = randi([1, size(legal_positions, 3)]);
-    % iterate through all legal moves 
-    best_eval = 1000;
-    for i=1:size(legal_positions, 3)
+    optimal_index = 1;
+    if depth == 0
         
-        temp_eval = evaluate_board(legal_positions(:,:,i));
-        if temp_eval < best_eval
-            best_eval = temp_eval;
-            optimal_index = i;
+        return;
+    end
+
+    depth = depth - 1;
+    if turn % if it's black's turn
+        legal_positions = get_bot_positions(game_status, true);
+        for i=1:size(legal_positions, 3)
+            j = minimax(legal_positions(:,:,i), a, b, false, depth);
+            
+            temp_eval = evaluate_board(legal_positions(:,:,j));
+            if temp_eval < b
+                b = temp_eval;
+                optimal_index = i;
+            end
+        end
+    else % it's white's turn
+        legal_positions = get_bot_positions(game_status, false);
+        for i=1:size(legal_positions, 3)
+            j = minimax(legal_positions(:,:,i), a, b, true, depth);
+            temp_eval = evaluate_board(legal_positions(:,:,j));
+            if temp_eval > a
+                a = temp_eval;
+                optimal_index = i;
+            end
         end
     end
 end
