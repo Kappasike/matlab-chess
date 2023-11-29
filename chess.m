@@ -185,9 +185,10 @@ while 1
                 end
 
                 if bot_enabled
-                    %legal_positions = get_bot_positions(game_status);
+                    legal_positions = get_bot_positions(game_status, true);
                     %game_status = legal_positions(:,:,randi([1, size(legal_positions, 3)]));
                     best_move_index = minimax(game_status, -1000, 1000, true);
+                    game_status = legal_positions(:,:,best_move_index);
                     bg = stock_bg;
                     drawScene(main_scene, bg, game_status);
                     title("Selection Made");
