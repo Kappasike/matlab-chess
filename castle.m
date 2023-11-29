@@ -84,7 +84,7 @@ function [final_game_status] = castle(game_status, r, c, x, y, turn, ...
             % if we've reached this point it's safe to perform the castle
             final_game_status(1,5) = 8;
             final_game_status(1,1) = 8;
-            final_game_status(1,3) = 11;
+            final_game_status(1,3) = 16;
             final_game_status(1,4) = 20;
         end
     end

@@ -34,17 +34,6 @@ bg = [
     ls, ds, ls, ds, ls, ds, ls, ds;
     ds, ls, ds, ls, ds, ls, ds, ls;
 ];
-
-stock_bg = [
-    ls, ds, ls, ds, ls, ds, ls, ds;
-    ds, ls, ds, ls, ds, ls, ds, ls;
-    ls, ds, ls, ds, ls, ds, ls, ds;
-    ds, ls, ds, ls, ds, ls, ds, ls;
-    ls, ds, ls, ds, ls, ds, ls, ds;
-    ds, ls, ds, ls, ds, ls, ds, ls;
-    ls, ds, ls, ds, ls, ds, ls, ds;
-    ds, ls, ds, ls, ds, ls, ds, ls;
-];
     
 % this contains the splash screen
 game_start = [
@@ -125,8 +114,8 @@ while 1
         while 1
             % let them choose what piece they want to move
             [r,c] = getMouseInput(main_scene);
-            if ((turn && is_black(game_status, r, c)) || ...
-                    (~turn && is_white(game_status, r, c)))
+            if (((turn && is_black(game_status, r, c)) || ...
+                    (~turn && is_white(game_status, r, c))) && ~(turn && bot_enabled))
                 prev_color = bg(r,c);
                 bg(r,c) = ss;
                 selected_piece = game_status(r,c);
@@ -159,18 +148,14 @@ while 1
 
                     game_status(r,c) = tp;
                     game_status(x,y) = selected_piece;
-                    if ~bot_enabled
-                        turn = ~turn;
-                    end
+                    turn = ~turn;
                     checkmate = is_checkmate(game_status, turn);
                 else
                     % below is called bad programming
                     game_status_temp = castle(game_status, r, c, x, y,...
                         turn, w_moved, b_moved);
                     if ~isequal(game_status_temp, game_status)
-                        if ~bot_enabled
-                            turn = ~turn;
-                        end
+                        turn = ~turn;
                         game_status = game_status_temp;
                     end
                 end
@@ -183,15 +168,9 @@ while 1
                     fprintf("checkmate liberals\n");
                     break;
                 end
-
-                if bot_enabled
-                    %legal_positions = get_bot_positions(game_status);
-                    %game_status = legal_positions(:,:,randi([1, size(legal_positions, 3)]));
-                    best_move_index = minimax(game_status, -1000, 1000, true);
-                    bg = stock_bg;
-                    drawScene(main_scene, bg, game_status);
-                    title("Selection Made");
-                end
+            else
+                % let bot make da move
+                legal_moves = get_legal_squares(game_status,2,5);
                 
             end
         end
